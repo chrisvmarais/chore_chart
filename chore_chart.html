@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Chore Chart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .month-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .month-tab {
+            padding: 12px 24px;
+            background: #e0e7ff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #4c51bf;
+        }
+        
+        .month-tab:hover {
+            background: #c7d2fe;
+        }
+        
+        .month-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .month-content {
+            display: none;
+        }
+        
+        .month-content.active {
+            display: block;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        input[type="text"] {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button.delete {
+            background: #ef4444;
+        }
+        
+        button.delete:hover {
+            background: #dc2626;
+        }
+        
+        .frequency-section {
+            margin-bottom: 40px;
+        }
+        
+        .frequency-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .chore-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .chore-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .chore-name {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .assign-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .assign-controls select {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .assigned-to {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .person-tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .person-tag .remove {
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+        
+        .person-tag .remove:hover {
+            opacity: 1;
+        }
+        
+        .checkboxes {
+            margin-top: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .checkbox-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+        
+        .checkbox-item label {
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+        
+        .add-chore-section {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .add-chore-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .family-members {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .family-members h3 {
+            margin-bottom: 10px;
+            color: #856404;
+        }
+        
+        .member-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .member-item {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏡 Family Chore Chart</h1>
+        
+        <div class="month-tabs" id="monthTabs"></div>
+        
+        <div class="family-members">
+            <h3>Family Members</h3>
+            <div class="input-group">
+                <input type="text" id="newMemberInput" placeholder="Add family member name">
+                <button onclick="addFamilyMember()">Add Member</button>
+            </div>
+            <div class="member-list" id="memberList"></div>
+        </div>
+        
+        <div class="add-chore-section">
+            <h3 style="margin-bottom: 15px;">Add New Chore</h3>
+            <div class="add-chore-form">
+                <input type="text" id="newChoreInput" placeholder="Chore name">
+                <select id="choreFrequency">
+                    <option value="weekly">Weekly</option>
+                    <option value="biweekly">Biweekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+                <button onclick="addChore()">Add Chore</button>
+            </div>
+        </div>
+        
+        <div id="monthsContainer"></div>
+    </div>
+    
+    <script>
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        let currentMonth = new Date().getMonth(); // 0-11
+        let familyMembers = [];
+        let chores = {
+            weekly: [
+                'Mop floors',
+                'Vacuum',
+                'Tidy up house',
+                'Put away shoes',
+                'Litter Boxes',
+                'Bathrooms'
+            ],
+            biweekly: [
+                'Sheets',
+                'Showers'
+            ],
+            monthly: [
+                'Comforter'
+            ]
+        };
+        
+        let assignments = {};
+        let completions = {}; // Format: {month: {choreKey: {week1: true, week2: false, ...}}}
+        
+        function initializeMonthTabs() {
+            const tabsContainer = document.getElementById('monthTabs');
+            tabsContainer.innerHTML = months.map((month, index) => `
+                <button class="month-tab ${index === currentMonth ? 'active' : ''}" 
+                        onclick="switchMonth(${index})">
+                    ${month}
+                </button>
+            `).join('');
+        }
+        
+        function switchMonth(monthIndex) {
+            currentMonth = monthIndex;
+            document.querySelectorAll('.month-tab').forEach((tab, index) => {
+                tab.classList.toggle('active', index === monthIndex);
+            });
+            renderChores();
+        }
+        
+        function getCheckboxCount(frequency) {
+            switch(frequency) {
+                case 'weekly': return 4;
+                case 'biweekly': return 2;
+                case 'monthly': return 1;
+                default: return 1;
+            }
+        }
+        
+        function getCheckboxLabel(frequency, index) {
+            if (frequency === 'weekly') return `Week ${index + 1}`;
+            if (frequency === 'biweekly') return `Period ${index + 1}`;
+            return 'Done';
+        }
+        
+        function toggleCheckbox(month, choreKey, checkboxIndex) {
+            if (!completions[month]) completions[month] = {};
+            if (!completions[month][choreKey]) completions[month][choreKey] = {};
+            
+            completions[month][choreKey][checkboxIndex] = !completions[month][choreKey][checkboxIndex];
+            saveToLocalStorage();
+        }
+        
+        function isChecked(month, choreKey, checkboxIndex) {
+            return completions[month]?.[choreKey]?.[checkboxIndex] || false;
+        }
+        
+        function renderFamilyMembers() {
+            const list = document.getElementById('memberList');
+            list.innerHTML = familyMembers.map(member => `
+                <div class="member-item">
+                    <span>${member}</span>
+                    <span class="remove" onclick="removeFamilyMember('${member}')" style="cursor: pointer;">✕</span>
+                </div>
+            `).join('');
+        }
+        
+        function addFamilyMember() {
+            const input = document.getElementById('newMemberInput');
+            const name = input.value.trim();
+            if (name && !familyMembers.includes(name)) {
+                familyMembers.push(name);
+                input.value = '';
+                renderFamilyMembers();
+                renderChores();
+                saveToLocalStorage();
+            }
+        }
+        
+        function removeFamilyMember(name) {
+            familyMembers = familyMembers.filter(m => m !== name);
+            Object.keys(assignments).forEach(choreKey => {
+                assignments[choreKey] = assignments[choreKey].filter(m => m !== name);
+            });
+            renderFamilyMembers();
+            renderChores();
+            saveToLocalStorage();
+        }
+        
+        function addChore() {
+            const input = document.getElementById('newChoreInput');
+            const frequency = document.getElementById('choreFrequency').value;
+            const choreName = input.value.trim();
+            
+            if (choreName && !chores[frequency].includes(choreName)) {
+                chores[frequency].push(choreName);
+                input.value = '';
+                renderChores();
+                saveToLocalStorage();
+            }
+        }
+        
+        function removeChore(frequency, chore) {
+            chores[frequency] = chores[frequency].filter(c => c !== chore);
+            const key = `${frequency}-${chore}`;
+            delete assignments[key];
+            
+            // Remove completions for this chore
+            months.forEach((_, monthIndex) => {
+                if (completions[monthIndex] && completions[monthIndex][key]) {
+                    delete completions[monthIndex][key];
+                }
+            });
+            
+            renderChores();
+            saveToLocalStorage();
+        }
+        
+        function assignPerson(frequency, chore) {
+            const selectId = `select-${frequency}-${chore.replace(/\s/g, '_')}`;
+            const select = document.getElementById(selectId);
+            const person = select.value;
+            
+            if (person) {
+                const key = `${frequency}-${chore}`;
+                if (!assignments[key]) {
+                    assignments[key] = [];
+                }
+                if (!assignments[key].includes(person)) {
+                    assignments[key].push(person);
+                }
+                select.value = '';
+                renderChores();
+                saveToLocalStorage();
+            }
+        }
+        
+        function unassignPerson(frequency, chore, person) {
+            const key = `${frequency}-${chore}`;
+            assignments[key] = assignments[key].filter(p => p !== person);
+            renderChores();
+            saveToLocalStorage();
+        }
+        
+        function renderChores() {
+            const container = document.getElementById('monthsContainer');
+            const frequencies = {
+                'weekly': 'Weekly Chores',
+                'biweekly': 'Biweekly Chores',
+                'monthly': 'Monthly Chores'
+            };
+            
+            let html = `<div class="month-content active">`;
+            
+            for (const [freq, title] of Object.entries(frequencies)) {
+                html += `
+                    <div class="frequency-section">
+                        <div class="frequency-header">${title}</div>
+                `;
+                
+                chores[freq].forEach(chore => {
+                    const key = `${freq}-${chore}`;
+                    const assigned = assignments[key] || [];
+                    const checkboxCount = getCheckboxCount(freq);
+                    
+                    html += `
+                        <div class="chore-item">
+                            <div class="chore-header">
+                                <span class="chore-name">${chore}</span>
+                                <button class="delete" onclick="removeChore('${freq}', '${chore.replace(/'/g, "\\'")}')">Remove</button>
+                            </div>
+                            <div class="assign-controls">
+                                <select id="select-${freq}-${chore.replace(/\s/g, '_')}">
+                                    <option value="">Assign to...</option>
+                                    ${familyMembers.map(m => `<option value="${m}">${m}</option>`).join('')}
+                                </select>
+                                <button onclick="assignPerson('${freq}', '${chore.replace(/'/g, "\\'")}')">Assign</button>
+                            </div>
+                            ${assigned.length > 0 ? `
+                                <div class="assigned-to">
+                                    ${assigned.map(person => `
+                                        <div class="person-tag">
+                                            <span>${person}</span>
+                                            <span class="remove" onclick="unassignPerson('${freq}', '${chore.replace(/'/g, "\\'")}', '${person}')">✕</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                            <div class="checkboxes">
+                                <div class="checkbox-label">Task Completion:</div>
+                                <div class="checkbox-group">
+                                    ${Array.from({length: checkboxCount}, (_, i) => {
+                                        const checked = isChecked(currentMonth, key, i);
+                                        return `
+                                            <div class="checkbox-item">
+                                                <input type="checkbox" 
+                                                       id="check-${currentMonth}-${key.replace(/\s/g, '_')}-${i}"
+                                                       ${checked ? 'checked' : ''}
+                                                       onchange="toggleCheckbox(${currentMonth}, '${key}', ${i})">
+                                                <label for="check-${currentMonth}-${key.replace(/\s/g, '_')}-${i}">
+                                                    ${getCheckboxLabel(freq, i)}
+                                                </label>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+            
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+        
+        function saveToLocalStorage() {
+            const data = {
+                familyMembers,
+                chores,
+                assignments,
+                completions
+            };
+            localStorage.setItem('choreChart', JSON.stringify(data));
+        }
+        
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('choreChart');
+            if (saved) {
+                const data = JSON.parse(saved);
+                familyMembers = data.familyMembers || [];
+                chores = data.chores || chores;
+                assignments = data.assignments || {};
+                completions = data.completions || {};
+            }
+        }
+        
+        // Initialize
+        loadFromLocalStorage();
+        initializeMonthTabs();
+        renderFamilyMembers();
+        renderChores();
+        
+        // Allow Enter key to add members
+        document.getElementById('newMemberInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addFamilyMember();
+        });
+        
+        // Allow Enter key to add chores
+        document.getElementById('newChoreInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addChore();
+        });
+    </script>
+</body>
+</html>
