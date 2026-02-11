@@ -316,22 +316,19 @@
     </div>
     
     <script>
-        // ===== FIREBASE CONFIGURATION =====
-        // REPLACE THIS WITH YOUR FIREBASE CONFIG FROM STEP 3
-       // Import the functions you need from the SDKs you need
-      // Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAQQstlHpmuag7L2811rS3GfTmNoVpBy6E",
-  authDomain: "chore-chart-v2.firebaseapp.com",
-  databaseURL: "https://chore-chart-v2-default-rtdb.firebaseio.com",
-  projectId: "chore-chart-v2",
-  storageBucket: "chore-chart-v2.firebasestorage.app",
-  messagingSenderId: "322816069788",
-  appId: "1:322816069788:web:d49ece311c0598a5639d59"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQQstlHpmuag7L2811rS3GfTmNoVpBy6E",
+            authDomain: "chore-chart-v2.firebaseapp.com",
+            databaseURL: "https://chore-chart-v2-default-rtdb.firebaseio.com",
+            projectId: "chore-chart-v2",
+            storageBucket: "chore-chart-v2.firebasestorage.app",
+            messagingSenderId: "322816069788",
+            appId: "1:322816069788:web:d49ece311c0598a5639d59"
+        };
+        // ============================================
         
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
