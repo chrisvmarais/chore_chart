@@ -316,24 +316,26 @@
     </div>
     
     <script>
-        // ============================================
-        // FIREBASE CONFIGURATION
-        // ============================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyAQQstlHpmuag7L2811rS3GfTmNoVpBy6E",
-            authDomain: "chore-chart-v2.firebaseapp.com",
-            databaseURL: "https://chore-chart-v2-default-rtdb.firebaseio.com",
-            projectId: "chore-chart-v2",
-            storageBucket: "chore-chart-v2.firebasestorage.app",
-            messagingSenderId: "322816069788",
-            appId: "1:322816069788:web:d49ece311c0598a5639d59"
-        };
-        // ============================================
-        
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const dbRef = database.ref('choreChart');
+        // Wait for Firebase scripts to load
+        window.addEventListener('load', function() {
+            // ============================================
+            // FIREBASE CONFIGURATION
+            // ============================================
+            const firebaseConfig = {
+                apiKey: "AIzaSyAQQstlHpmuag7L2811rS3GfTmNoVpBy6E",
+                authDomain: "chore-chart-v2.firebaseapp.com",
+                databaseURL: "https://chore-chart-v2-default-rtdb.firebaseio.com",
+                projectId: "chore-chart-v2",
+                storageBucket: "chore-chart-v2.firebasestorage.app",
+                messagingSenderId: "322816069788",
+                appId: "1:322816069788:web:d49ece311c0598a5639d59"
+            };
+            // ============================================
+            
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
+            const dbRef = database.ref('choreChart');
         
         // ===== APP CODE =====
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 
@@ -494,6 +496,16 @@
             saveToFirebase();
         }
         
+        // Make functions globally accessible for onclick handlers
+        window.switchMonth = switchMonth;
+        window.toggleCheckbox = toggleCheckbox;
+        window.addFamilyMember = addFamilyMember;
+        window.removeFamilyMember = removeFamilyMember;
+        window.addChore = addChore;
+        window.removeChore = removeChore;
+        window.assignPerson = assignPerson;
+        window.unassignPerson = unassignPerson;
+        
         function renderChores() {
             const container = document.getElementById('monthsContainer');
             const frequencies = {
@@ -608,6 +620,8 @@
         document.getElementById('newChoreInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') addChore();
         });
+        
+        }); // End of window.addEventListener('load')
     </script>
 </body>
 </html>
